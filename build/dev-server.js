@@ -21,6 +21,43 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
+/*datura接口 20170615*/
+var appData = require('../data.json');
+var seller = appData.seller;
+var goods = appData.goods;
+var ratings = appData.ratings;
+
+var apiRoutes = express.Router();
+
+apiRoutes.get('/seller', function (req, res) {
+    res.json({
+      errno: 0,
+      data: seller
+    });
+});
+
+apiRoutes.get('/goods', function (req, res) {
+    res.json({
+      errno: 0,
+      data: goods
+    });
+});
+
+apiRoutes.get('/ratings', function (req, res) {
+    res.json({
+        errno: 0,
+        data: ratings
+    });
+});
+
+app.use('/api', apiRoutes);
+/* datura接口 _end*/
+/* datura接口说明 */
+/* 1. 需要在var app = express() 代码下写新增代码,，因通过接口获取数据依赖于express()对象下方法 */
+/* 2. 用require引入模拟数据的文件 */
+/* 3. 用express对象下的Router方法来指定入口在哪 */
+/* 4. 对进入“入口”的obj，返回相关数据 */
+
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
