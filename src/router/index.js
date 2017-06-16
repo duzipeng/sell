@@ -8,7 +8,8 @@ Vue.use(Router)
 const routes = [
   {
     path: '/',
-    component: goods
+    component: goods,
+    name: 'goods'
   },
   {
     path: '/ratings',
@@ -20,5 +21,6 @@ const routes = [
   }
 ]
 export default new Router({
-    routes
+    routes,
+    linkActiveClass: 'v-active'
 })
