@@ -17,23 +17,37 @@
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
       </div>
-      <div v-if="seller.supports" class="support-count">
+      <div v-if="seller.supports" class="support-count" @click="showDetail">
         <span class="count">{{seller.supports.length}}个</span>
         <i class="icon-keyboard_arrow_right"></i>
       </div>
     </div>
-    <div class="bulletin-wrapper">
+    <div class="bulletin-wrapper" @click="showDetail">
         <span class="bulletin-title"></span><span class="bulletin-text">{{seller.bulletin}}</span>
         <i class="icon-keyboard_arrow_right"></i>
     </div>
+    <div class="background">
+      <img :src="seller.avatar" width="100%" height="100%">
+    </div>
+    <div v-show="detailShow" class="detail"></div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
+    data() {
+      return {
+        detailShow: false
+      }
+    },
     props: {
       seller: {
         type: Object
+      }
+    },
+    methods: {
+      showDetail() {
+        this.detailShow = true
       }
     },
     created() {
@@ -47,8 +61,10 @@
   @import "../../common/stylus/mixin.styl"
 
   .header
+    position: relative
+    overflow: hidden
     color: #fff
-    background-color: #aaa
+    background: rgba(7, 17, 27, 0.5)
     .content-wrapper
       position: relative
       padding: 24px 12px 18px 24px
@@ -131,7 +147,7 @@
       .bulletin-title
         display: inline-block
         vertical-align: top
-        margin-top: 7px
+        margin-top: 8px
         width: 22px
         height: 12px
         bg-image('bulletin')
@@ -146,4 +162,21 @@
         font-size: 10px
         right: 12px
         top: 8px
+    .background
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      z-index: -1
+      filter: blur(10px)
+    .detail
+      position: fixed
+      z-index: 100
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      overflow: auto
+      background: rgba(7, 17, 27, 0.8)
 </style>
