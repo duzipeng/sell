@@ -17,9 +17,9 @@
 
   export default {
     data() {
-        return {
-            seller: {}
-        }
+      return {
+        seller: {}
+      }
     },
     created() {
       this.$http.get('/api/seller').then((response) => {
