@@ -89,8 +89,7 @@
       }
     },
     created() {
-      this.classMap = ['decrease', 'discount', 'special', 'invoice',
-      'guarantee']
+      this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
     },
     components: {
       star
