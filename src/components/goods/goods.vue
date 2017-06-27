@@ -2,7 +2,7 @@
   <div class="goods">
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
-        <li v-for="(item, index) in goods" class="menu-item" :class="{'current': currentIndex === index}">
+        <li v-for="(item, index) in goods" class="menu-item" :class="{'current': currentIndex === index}" @click="selectMenu(index, $event)">
           <span class="text border-1px">
             <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
           </span>
@@ -33,11 +33,13 @@
         </li>
       </ul>
     </div>
+    <shop-cart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shop-cart>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
+  import ShopCart from '../shopcart/shopcart.vue'
 
   const  ERR_OK = 0;
 
@@ -54,7 +56,7 @@
         for (let i = 0; i < this.listHeight.length; i++) {
           let height1 = this.listHeight[i]
           let height2 = this.listHeight[i + 1]
-          if (!height2 || (this.scrollY > height1 && this.scrollY < height2)) {
+          if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
             return i
           }
         }
@@ -65,6 +67,9 @@
       seller: {
         type: Object
       }
+    },
+    components: {
+      ShopCart
     },
     created() {
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
@@ -80,8 +85,18 @@
       })
     },
     methods: {
+      selectMenu(index, event) {
+        if (!event._constructed) {
+          return ;
+        }
+        let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook')
+        let el = foodList[index]
+        this.foodsScroll.scrollToElement(el, 300)
+      },
       _initScroll() {
-        this.menuScroll = new BScroll(this.$refs.menuWrapper, {})
+        this.menuScroll = new BScroll(this.$refs.menuWrapper, {
+          click: true
+        })
 
         this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
           probeType: 3
