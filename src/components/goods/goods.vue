@@ -58,10 +58,10 @@
     computed: {
       currentIndex() {
         for (let i = 0; i < this.listHeight.length; i++) {
-          let height1 = this.listHeight[i]
-          let height2 = this.listHeight[i + 1]
+          let height1 = this.listHeight[i];
+          let height2 = this.listHeight[i + 1];
           if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
-            return i
+            return i;
           }
         }
         return 0
@@ -73,9 +73,9 @@
             if (food.count) {
               foods.push(food);
             }
-          })
-        })
-        return foods
+          });
+        });
+        return foods;
       }
     },
     props: {
@@ -88,11 +88,11 @@
       CartControl
     },
     created() {
-      this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+      this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
       this.$http.get('/api/goods').then((response) => {
-        response = response.body
+        response = response.body;
         if (response.errno === ERR_OK) {
-          this.goods = response.data
+          this.goods = response.data;
           this.$nextTick(() => {
             this._initScroll();
             this._calculateHeight();
@@ -102,41 +102,41 @@
     },
     methods: {
       cartAdd(target) {
-        this._drop(target)
+        this._drop(target);
       },
       _drop(target) {
-        this.$refs.ShopCart.drop(target)
+        this.$refs.ShopCart.drop(target);
       },
       selectMenu(index, event) {
         if (!event._constructed) {
           return ;
         }
-        let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook')
-        let el = foodList[index]
-        this.foodsScroll.scrollToElement(el, 300)
+        let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
+        let el = foodList[index];
+        this.foodsScroll.scrollToElement(el, 300);
       },
       _initScroll() {
         this.menuScroll = new BScroll(this.$refs.menuWrapper, {
           click: true
-        })
+        });
 
         this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
           click: true,
           probeType: 3
-        })
+        });
 
         this.foodsScroll.on('scroll', (pos) => {
           this.scrollY = Math.abs(Math.round(pos.y))
-        })
+        });
       },
       _calculateHeight() {
-        let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook')
-        let height = 0
-        this.listHeight.push(height)
+        let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
+        let height = 0;
+        this.listHeight.push(height);
         for (let i = 0; i < foodList.length; i++) {
-          let item = foodList[i]
-          height += item.clientHeight
-          this.listHeight.push(height)
+          let item = foodList[i];
+          height += item.clientHeight;
+          this.listHeight.push(height);
         }
       }
     }

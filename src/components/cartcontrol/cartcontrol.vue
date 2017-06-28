@@ -21,21 +21,21 @@
     methods: {
       addCart(event) {
         if (!event._constructed) {
-          return
+          return;
         }
         if (!this.food.count) {
-          Vue.set(this.food, 'count', 1)
+          Vue.set(this.food, 'count', 1);
         } else {
-          this.food.count++
+          this.food.count++;
         }
-        this.$emit('cartAdd', event.target)
+        this.$emit('cartAdd', event.target);
       },
       decreaseCart(event) {
         if (!event._constructed) {
-          return
+          return;
         }
         if (this.food.count) {
-          this.food.count--
+          this.food.count--;
         }
       }
     }
@@ -58,10 +58,10 @@
       &.move-leave-active
         transition: all 0.4s linear
         opacity: 0
-        transform: translate3D(24px, 0, 0) rotate(180deg)
+        transform: translate3d(24px, 0, 0) rotate(180deg)
       &.move-enter
         opacity: 0
-        transform: translate3D(24px, 0, 0)
+        transform: translate3d(24px, 0, 0)
     .cart-count
       display: inline-block
       vertical-align: top

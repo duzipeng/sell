@@ -15,9 +15,12 @@
         <div class="pay" :class="payClass">{{payDesc}}</div>
       </div>
     </div>
-    <transition-group name="drop" tag="div" class="ball-container">
+    <transition-group name="drop" tag="div" class="ball-container"
+                      v-on:before-enter="beforeEnter"
+                      v-on:enter="enter"
+                      v-on:after-enter="afterEnter">
       <div v-for="(ball, index) in balls" v-show="ball.show" class="ball" :key="index">
-        <div class="inner"></div>
+        <div class="inner inner-hook"></div>
       </div>
     </transition-group>
   </div>
@@ -43,14 +46,15 @@
           {
             show: false
           }
-        ]
+        ],
+        dropBalls: []
       }
     },
     props: {
       selectFoods: {
         type: Array,
         default() {
-          return []
+          return [];
         }
       },
       deliveryPrice: {
@@ -64,40 +68,83 @@
     },
     computed: {
       totalPrice() {
-        let total = 0
+        let total = 0;
         this.selectFoods.forEach((food) => {
-          total += food.price * food.count
-        })
-        return total
+          total += food.price * food.count;
+        });
+        return total;
       },
       totalCount() {
-        let count = 0
+        let count = 0;
         this.selectFoods.forEach((food) => {
-          count += food.count
-        })
-        return count
+          count += food.count;
+        });
+        return count;
       },
       payDesc() {
         if (this.totalPrice === 0) {
-          return `￥${this.minPrice}元起送`
+          return `￥${this.minPrice}元起送`;
         } else if (this.totalPrice < this.minPrice) {
-          let diff = this.minPrice - this.totalPrice
-          return `还差￥${diff}元起送`
+          let diff = this.minPrice - this.totalPrice;
+          return `还差￥${diff}元起送`;
         } else {
-          return '去结算'
+          return '去结算';
         }
       },
       payClass() {
         if (this.totalPrice < this.minPrice) {
-          return 'not-enough'
+          return 'not-enough';
         } else {
-          return 'enough'
+          return 'enough';
         }
       }
     },
     methods: {
       drop(el) {
-        console.log(el)
+        for (let i = 0; i < this.balls.length; i++) {
+          let ball = this.balls[i];
+          if (!ball.show) {
+            ball.show = true;
+            ball.el = el;
+            this.dropBalls.push(ball);
+            return;
+          }
+        }
+      },
+      beforeEnter: function (el) {
+        let count = this.balls.length;
+        while (count--) {
+          let ball = this.balls[count];
+          if (ball.show) {
+            let rect = ball.el.getBoundingClientRect();
+            let x = rect.left - 32;
+            let y = -(window.innerHeight - rect.top - 22);
+            el.style.display = '';
+            el.style.webkitTransform = `translate3d(0, ${y}px, 0)`;
+            el.style.transform = `translate3D(0, ${y}px, 0)`;
+            let inner = el.getElementsByClassName('inner-hook')[0];
+            inner.style.webkitTransform = `translate3d(${x}px, 0, 0)`;
+            inner.transform = `translate3d(${x}px, 0, 0)`;
+          }
+        }
+      },
+      enter: function (el) {
+        /* eslint-disable no-unused-vars */
+        let rf = el.offsetHeight;
+        this.$nextTick(() => {
+          el.style.webkitTransform = 'translate3d(0, 0, 0)';
+          el.style.transform = 'translate3d(0, 0, 0)';
+          let inner = el.getElementsByClassName('inner-hook')[0];
+          inner.style.webkitTransform = 'translate3d(0, 0, 0)';
+          inner.transform = 'translate3d(0, 0, 0)';
+        })
+      },
+      afterEnter: function (el) {
+        let ball = this.dropBalls.shift();
+        if (ball) {
+          ball.show = false;
+          el.style.display = 'none';
+        }
       }
     }
   }
