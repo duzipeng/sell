@@ -15,11 +15,37 @@
         <div class="pay" :class="payClass">{{payDesc}}</div>
       </div>
     </div>
+    <transition-group name="drop" tag="div" class="ball-container">
+      <div v-for="(ball, index) in balls" v-show="ball.show" class="ball" :key="index">
+        <div class="inner"></div>
+      </div>
+    </transition-group>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
+    data() {
+      return {
+        balls: [
+          {
+            show: false
+          },
+          {
+            show: false
+          },
+          {
+            show: false
+          },
+          {
+            show: false
+          },
+          {
+            show: false
+          }
+        ]
+      }
+    },
     props: {
       selectFoods: {
         type: Array,
@@ -67,6 +93,11 @@
         } else {
           return 'enough'
         }
+      }
+    },
+    methods: {
+      drop(el) {
+        console.log(el)
       }
     }
   }
@@ -160,4 +191,16 @@
           &.enough
             background-color: #00b43c
             color: #fff
+    .ball-container
+      .ball
+        position: fixed
+        left: 32px
+        bottom: 22px
+        z-index: 200
+        .inner
+          width: 16px
+          height: 16px
+          border-radius: 50%
+          background: rgb(0, 160, 220)
+
 </style>

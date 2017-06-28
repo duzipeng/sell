@@ -27,19 +27,23 @@
                 <div class="price">
                   <span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
+                <div class="cartcontrol-wrapper">
+                  <cart-control @cartAdd="cartAdd" :food="food"></cart-control>
+                </div>
               </div>
             </li>
           </ul>
         </li>
       </ul>
     </div>
-    <shop-cart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shop-cart>
+    <shop-cart ref="ShopCart" :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shop-cart>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
-  import ShopCart from '../shopcart/shopcart.vue'
+  import ShopCart from 'components/shopcart/shopcart.vue'
+  import CartControl from 'components/cartcontrol/cartcontrol.vue'
 
   const  ERR_OK = 0;
 
@@ -61,6 +65,17 @@
           }
         }
         return 0
+      },
+      selectFoods() {
+        let foods = [];
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+            if (food.count) {
+              foods.push(food);
+            }
+          })
+        })
+        return foods
       }
     },
     props: {
@@ -69,7 +84,8 @@
       }
     },
     components: {
-      ShopCart
+      ShopCart,
+      CartControl
     },
     created() {
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
@@ -85,6 +101,12 @@
       })
     },
     methods: {
+      cartAdd(target) {
+        this._drop(target)
+      },
+      _drop(target) {
+        this.$refs.ShopCart.drop(target)
+      },
       selectMenu(index, event) {
         if (!event._constructed) {
           return ;
@@ -99,6 +121,7 @@
         })
 
         this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
+          click: true,
           probeType: 3
         })
 
@@ -224,4 +247,8 @@
               color: rgb(147, 153, 159)
 
 
+          .cartcontrol-wrapper
+            position: absolute
+            right: 0
+            bottom: 12px
 </style>
