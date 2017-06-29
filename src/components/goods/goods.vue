@@ -39,7 +39,7 @@
       </div>
       <shop-cart ref="ShopCart" :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shop-cart>
     </div>
-    <food :food="selectedFood"></food>
+    <food :food="selectedFood" ref="food"></food>
   </div>
 </template>
 
@@ -129,6 +129,7 @@
           return ;
         }
         this.selectedFood = food;
+        this.$refs.food.show();
       },
       _initScroll() {
         this.menuScroll = new BScroll(this.$refs.menuWrapper, {

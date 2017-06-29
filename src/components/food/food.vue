@@ -1,13 +1,17 @@
 <template>
-  <div v-show="showFlag" class="food">
+  <transition name="move">
+    <div v-show="showFlag" class="food">
 
-  </div>
+    </div>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
     data() {
-      showFlag: false
+      return {
+        showFlag: false
+      };
     },
     props: {
       food: {
@@ -31,4 +35,11 @@
     z-index: 30
     width: 100%
     background: #fff
+    &.move-enter-active
+      transition: all 0.2s linear
+    &.move-leave-active
+      transition: all 0.2s linear
+      transform: translate3d(100%, 0, 0)
+    &.move-enter
+      transform: translate3d(100%, 0, 0)
 </style>
