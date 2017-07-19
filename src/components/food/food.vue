@@ -32,11 +32,11 @@
         <split></split>
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc"
+          <ratingselect @ratingType="ratingType" @toggleContent="toggleContent" :select-type="selectType" :only-content="onlyContent" :desc="desc"
                         :ratings="food.ratings"></ratingselect>
           <div class="rating-wrapper">
             <ul v-show="food.ratings && food.ratings.length">
-              <li v-for="rating in food.ratings" class="rating-item">
+              <li v-show="needShow(rating.rateType, rating.text)" v-for="rating in food.ratings" class="rating-item">
                 <div class="user">
                   <span class="name">{{rating.username}}</span>
                   <img width="12" height="12" class="avatar" :src="rating.avatar">
@@ -109,6 +109,22 @@
         console.log(event.target)
         this.$emit('cartAdd', event.target);
         Vue.set(this.food, 'count', 1)
+      },
+      needShow(type, text) {
+        if (this.onlyContent && !text) {
+          return false;
+        }
+        if (this.selectType === ALL) {
+          return true;
+        } else {
+          return type === this.selectType;
+        }
+      },
+      ratingType(type) {
+        this.selectType = type;
+      },
+      toggleContent(content) {
+        this.onlyContent = content;
       }
     },
     components: {
