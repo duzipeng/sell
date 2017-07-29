@@ -184,6 +184,19 @@
           margin-right: 12px
           img
             border-radius: 50%
+        .content
+          position: relative
+          flex: 1
+          .name
+            margin-bottom: 4px
+            line-height: 12px
+            font-size: 10px
+            color: rgb(7, 17, 27)
+          .star-wrapper
+            margin-bottom: 6px
+            font-size: 0
+            .star
+              display: inline-block
 </style>
 
 
