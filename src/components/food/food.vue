@@ -122,9 +122,15 @@
       },
       ratingType(type) {
         this.selectType = type;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        })
       },
       toggleContent(content) {
         this.onlyContent = content;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        })
       }
     },
     components: {
