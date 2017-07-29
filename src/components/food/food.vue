@@ -32,7 +32,8 @@
         <split></split>
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <ratingselect @ratingType="ratingType" @toggleContent="toggleContent" :select-type="selectType" :only-content="onlyContent" :desc="desc"
+          <ratingselect @ratingType="ratingType" @toggleContent="toggleContent" :select-type="selectType"
+                        :only-content="onlyContent" :desc="desc"
                         :ratings="food.ratings"></ratingselect>
           <div class="rating-wrapper">
             <ul v-show="food.ratings && food.ratings.length">
@@ -41,13 +42,13 @@
                   <span class="name">{{rating.username}}</span>
                   <img width="12" height="12" class="avatar" :src="rating.avatar">
                 </div>
-                <div class="time">{{rating.rateTime}}</div>
+                <div class="time">{{rating.rateTime | formatDate}}</div>
                 <p class="text">
                   <span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>{{rating.text}}
                 </p>
               </li>
             </ul>
-            <div class="no-rating" v-show="!food.ratings || !food.ratings.length"></div>
+            <div class="no-rating" v-show="!food.ratings || !food.ratings.length">暂无评价</div>
           </div>
         </div>
       </div>
@@ -58,6 +59,7 @@
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
   import Vue from 'vue'
+  import {formatDate} from 'common/js/date'
   import CartControl from 'components/cartcontrol/cartcontrol'
   import ratingselect from 'components/ratingselect/ratingselect'
   import split from 'components/split/split'
@@ -106,7 +108,6 @@
         if (!event._constructed) {
           return;
         }
-        console.log(event.target)
         this.$emit('cartAdd', event.target);
         Vue.set(this.food, 'count', 1)
       },
@@ -131,6 +132,12 @@
         this.$nextTick(() => {
           this.scroll.refresh();
         })
+      }
+    },
+    filters: {
+      formatDate(time) {
+        let date = new Date(time);
+        return formatDate(date, 'yyyy-MM-dd hh:mm')
       }
     },
     components: {
@@ -286,4 +293,8 @@
               color: rgb(0, 160, 220)
             .icon-thumb_down
               color: rgb(147, 153, 159)
+        .no-rating
+          padding: 16px 0
+          font-size: 12px
+          color: rgb(147, 153, 159)
 </style>
