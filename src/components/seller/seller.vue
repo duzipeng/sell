@@ -28,7 +28,7 @@
             </div>
           </li>
         </ul>
-        <div class="favorite">
+        <div class="favorite" @click="toggleFavorite">
           <span class="icon-favorite" :class="{'active': favorite}"></span>
           <span class="text">{{favoriteText}}</span>
         </div>
@@ -57,7 +57,7 @@
           </ul>
         </div>
       </div>
-      <spilt></spilt>
+      <split></split>
       <div class="info">
         <h1 class="title border-1px">商家信息</h1>
         <ul>
@@ -134,6 +134,12 @@
           }
 
         }
+      },
+      toggleFavorite(event) {
+        if (!event._constructed) {
+          return ;
+        }
+        this.favorite = !this.favorite;
       }
     },
     components: {

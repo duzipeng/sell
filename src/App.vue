@@ -10,7 +10,8 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
+  import {urlParse} from 'common/js/util'
   import header from 'components/header/header.vue'
 
   const ERR_OK = 0
@@ -18,7 +19,12 @@
   export default {
     data() {
       return {
-        seller: {}
+        seller: {
+          id: (() => {
+            let queryParam = urlParse();
+            return queryParam.id;
+          })()
+        }
       }
     },
     created() {
