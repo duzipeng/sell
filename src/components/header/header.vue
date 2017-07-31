@@ -154,7 +154,7 @@
             &.invoice
               bg-image('invoice_1')
             &.special
-              bg-image('special_1')
+              bg-ima ge('special_1')
           .text
             line-height: 12px
             font-size: 10px
