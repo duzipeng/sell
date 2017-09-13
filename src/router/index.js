@@ -21,6 +21,7 @@ const routes = [
   }
 ]
 export default new Router({
-    routes,
-    linkActiveClass: 'v-active'
+  routes,
+  linkActiveClass: 'v-active',
+  mode: 'history'
 })
